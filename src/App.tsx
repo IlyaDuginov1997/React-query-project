@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
+import {QueryClient, QueryClientProvider} from 'react-query';
 import './App.css';
+import {Home} from './Home';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export type DataType = {
+  body: string,
+  id: number,
+  title: string,
+  userId: number,
 }
 
-export default App;
+export const getPosts = async () => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+  await new Promise((r) => setTimeout(r, 1000))
+  return response.json()
+};
+
+const queryClient = new QueryClient()
+
+
+export default function App() {
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Home/>
+    </QueryClientProvider>);
+}
+
